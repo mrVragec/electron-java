@@ -6,8 +6,10 @@ if (setupEvents.handleSquirrelEvent()) {
 }
 
 const electron = require('electron')  // Module to control application life.
-
+var path = require('path')
 const app = electron.app
+
+
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 // Keep a global reference of the window object, if you don't, the window will
@@ -26,13 +28,13 @@ app.on('window-all-closed', function() {
 // initialization and ready for creating browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 640, height: 480});
+  mainWindow = new BrowserWindow({titleBarStyle: 'hidden', width: 640, height: 480, icon: path.join(__dirname, 'icons/png/icon.png')});
   // disable main menu
-  //mainWindow.setMenu(null);
+  // mainWindow.setMenu(null);
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
   // open dev tools
-  //mainWindow.openDevTools();
+  // mainWindow.openDevTools();
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
     // Dereference the window object, usually you would store windows
@@ -44,11 +46,12 @@ app.on('ready', function() {
 
 // In main process.
 const {ipcMain} = require('electron')
-var java = require("java");
+
 
 ipcMain.on('calculate', (event, arg) => {
-  java.classpath.push("./src");
-  var Calculator = java.import("de.lipros.electron.java.example.SimpleCalculator");
-  var result = Calculator.calculateSync(Calculator.getFormatedListSync(arg));
-  event.sender.send('updateResult', result);
+    var java = require("java");
+    java.classpath.push(__dirname + "/src");
+    var Calculator = java.import("de.lipros.electron.java.example.SimpleCalculator");
+    var result = Calculator.calculateSync(Calculator.getFormatedListSync(arg));
+    event.sender.send('updateResult', result);
 })
