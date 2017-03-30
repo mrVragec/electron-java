@@ -9,33 +9,37 @@ public class SimpleCalculator {
 
 		// if there is only one item in input list we don't have anything to
 		// calculate.
-		if (formated.size() == 1)
+		if (formated.size() == 1) {
 			return formated.get(0).toString();
+		} else if (formated.size() > 1) {
 
-		// get index for '*' and '/'
-		int multiply = formated.indexOf("*");
-		int devide = formated.indexOf("/");
+			// get index for '*' and '/'
+			int multiply = formated.indexOf("*");
+			int devide = formated.indexOf("/");
 
-		//
-		if (multiply > 0) {
-			double calculation = Double.valueOf(formated.get(multiply - 1)) * Double.valueOf(formated.get(multiply + 1));
-			updateList(formated, calculation, multiply);
-			return calculate(formated);
-		} else if (devide > 0) {
-			double calculation = Double.valueOf(formated.get(devide - 1)) / Double.valueOf(formated.get(devide + 1));
-			updateList(formated, calculation, devide);
-			return calculate(formated);
-		} else if ("+".equals(formated.get(1))) {
-			double calculation = Double.valueOf(formated.get(0)) + Double.valueOf(formated.get(2));
-			updateList(formated, calculation, 1);
-			return calculate(formated);
-		} else if ("-".equals(formated.get(1))) {
-			double calculation = Double.valueOf(formated.get(0)) - Double.valueOf(formated.get(2));
-			updateList(formated, calculation, 1);
-			return calculate(formated);
+			//
+			if (multiply > 0) {
+				double calculation = Double.valueOf(formated.get(multiply - 1))
+						* Double.valueOf(formated.get(multiply + 1));
+				updateList(formated, calculation, multiply);
+				return calculate(formated);
+			} else if (devide > 0) {
+				double calculation = Double.valueOf(formated.get(devide - 1))
+						/ Double.valueOf(formated.get(devide + 1));
+				updateList(formated, calculation, devide);
+				return calculate(formated);
+			} else if ("+".equals(formated.get(1))) {
+				double calculation = Double.valueOf(formated.get(0)) + Double.valueOf(formated.get(2));
+				updateList(formated, calculation, 1);
+				return calculate(formated);
+			} else if ("-".equals(formated.get(1))) {
+				double calculation = Double.valueOf(formated.get(0)) - Double.valueOf(formated.get(2));
+				updateList(formated, calculation, 1);
+				return calculate(formated);
+			}
 		}
 
-		return formated.get(0).toString();
+		return "";
 	}
 
 	private static void updateList(List<String> formated, double calculation, int newValueIndex) {
@@ -52,23 +56,22 @@ public class SimpleCalculator {
 	 */
 	public static List<String> getFormatedList(String inputString) {
 		List<String> returnValue = new ArrayList<String>();
-		Double value = new Double(0.0);
-		int factor = 1;
+		String value = "";
 		for (int i = 0; i < inputString.length(); i++) {
 			try {
-				if(".".equalsIgnoreCase(String.valueOf(inputString.charAt(i)))) {
-					factor = 10;
-					i++;
+				String inputValue = String.valueOf(inputString.charAt(i));
+				if (".".equalsIgnoreCase(inputValue)) {
+					value += inputValue;
+				} else {
+					value += Integer.valueOf(inputValue);
 				}
-				value += Double.valueOf(String.valueOf(inputString.charAt(i))) / factor;
-				factor = 1;
 			} catch (NumberFormatException nfe) {
 				returnValue.add(value.toString());
-				value = new Double(0.0);
+				value = "";
 				returnValue.add(String.valueOf(inputString.charAt(i)));
 			}
 		}
-		returnValue.add(value.toString());
+		returnValue.add(value);
 		return returnValue;
 	}
 }
