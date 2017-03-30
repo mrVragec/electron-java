@@ -13,7 +13,7 @@ cd electron-java
 npm install && npm start
 ```
 #Known issues
-Error: Module version mismatch. Expected 50, got XX.
+Error: Module version mismatch. Expected XX, got XX.
 ```bash
-npm rebuild --runtime=electron --target=1.4.3 --disturl=https://atom.io/download/atom-shell --build-from-source
+npm rebuild --runtime=electron --target=1.6.0 --disturl=https://atom.io/download/atom-shell --build-from-source
 ```
